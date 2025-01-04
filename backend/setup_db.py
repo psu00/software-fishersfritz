@@ -4,6 +4,18 @@ import sqlite3
 conn = sqlite3.connect('fischerfritz.db')
 cursor = conn.cursor()
 
+# Tabelle für dokumentierte Fänge erstellen
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS catches (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fish_name TEXT NOT NULL,
+    latitude REAL,
+    longitude REAL,
+    weight REAL NOT NULL,
+    date TEXT NOT NULL
+)
+''')
+
 # Tabelle für Fischarten mit erlaubten Jahreszeiten und Schonzeiten erstellen
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS fish (
