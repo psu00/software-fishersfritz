@@ -1,13 +1,12 @@
-from catch import catch_data
-from history import save_history
-from setup_db import setup_database
+from flask import Flask
+from catch import catch_blueprint
 
-def main():
-    print(setup_database())
-    data = catch_data()
-    print(data)
-    print(save_history(data))
+app = Flask(__name__)
+app.register_blueprint(catch_blueprint, url_prefix='/api')
 
-if __name__ == "__main__":
-    main()
+@app.route('/')
+def home():
+    return "Welcome to FisherFritz API!"
 
+if __name__ == '__main__':
+    app.run(debug=True)
