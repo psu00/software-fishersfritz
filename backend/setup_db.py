@@ -14,16 +14,6 @@ CREATE TABLE IF NOT EXISTS fish (
 )
 ''')
 
-# Tabelle für Fischarten mit erlaubten Jahreszeiten und Schonzeiten erstellen
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS fish (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    allowed_seasons TEXT NOT NULL,
-    closed_season TEXT
-)
-''')
-
 # Beispiel-Daten für die Fischarten hinzufügen
 fish_list = [
     ("Rotauge", "Frühling,Sommer", None),  # Keine spezifische Schonzeit gefunden
