@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS  # Cross-Origin Resource Sharing wird importiert, um API-Zugriffe von verschiedenen Domains zu ermöglichen
+from datetime import datetime, timedelta # Importieren des datetime-Moduls, um Datums- und Zeitfunktionen zu verwenden
 import sqlite3
 
 # Blueprint für die "history"-Komponente erstellen
@@ -33,7 +34,49 @@ def get_history():
 
     except sqlite3.Error as e:
         print(f"Database error: {e}")
-        return jsonify({"error": "Database error", "details": str(e)}), 500   
+        return jsonify({"error": "Database error", "details": str(e)}), 500
+
+ # Endpunkt: Gruppierte Fänge basierend auf Zeiträumen
+@history_blueprint.route('/history/filter', methods=['GET'])
+def filter_history():
+    # Zeitraum aus Query-Parametern abrufen (z. B. "1day", "1week")
+    filter_period = request.args.get('period', 'total')  # Default: "total"
+
+    try:
+        conn = get_db_connection()
+        query = """
+            SELECT fish_name, COUNT(*) AS count
+            FROM catches
+        """
+        params = []
+
+        # Zeitraum-Filter hinzufügen
+        if filter_period == '1day':
+            query += " WHERE date >= ?"
+            params.append((datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d'))
+        elif filter_period == '1week':
+            query += " WHERE date >= ?"
+            params.append((datetime.now() - timedelta(weeks=1)).strftime('%Y-%m-%d'))
+        elif filter_period == '1month':
+            query += " WHERE date >= ?"
+            params.append((datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d'))
+        elif filter_period == '1year':
+            query += " WHERE date >= ?"
+            params.append((datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d'))
+
+        # Gruppierung und Sortierung hinzufügen
+        query += " GROUP BY fish_name ORDER BY count DESC"
+
+        # Query ausführen
+        result = conn.execute(query, params).fetchall()
+        conn.close()
+
+        # Ergebnisse als Liste von Dictionaries zurückgeben
+        grouped_data = [dict(row) for row in result]
+        return jsonify(grouped_data), 200
+
+    except sqlite3.Error as e:
+        return jsonify({"error": "Database error", "details": str(e)}), 500
 
  # Endpunkt: Eintrag löschen
 @history_blueprint.route('/history/<int:catch_id>', methods=['DELETE'])
