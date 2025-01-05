@@ -14,7 +14,7 @@ def get_db_connection():
         return conn  # Gibt die Datenbankverbindung zurück
     except sqlite3.Error as e:
         print(f"SQLite Fehler: {e}")
-        return None
+        return jsonify({"error": "Database error", "details": str(e)}), 500
 
 # Route: Fang hinzufügen
 @catch_blueprint.route('/catch', methods=['POST'])  # POST-Methode, um neue Daten zu senden
