@@ -20,24 +20,26 @@ CREATE TABLE IF NOT EXISTS catches (
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS fish (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    allowed_seasons TEXT NOT NULL,
-    closed_season TEXT
+    name TEXT NOT NULL UNIQUE,
+    is_allowed BOOLEAN NOT NULL,
+    closed_season_start TEXT,
+    closed_season_end TEXT
 )
 ''')
 
 # Beispiel-Daten für die Fischarten hinzufügen
 fish_list = [
-    ("Rotauge", "Frühling,Sommer", None),  # Keine spezifische Schonzeit gefunden
-    ("Brachse", "Frühling,Sommer,Herbst", None),  # Keine spezifische Schonzeit gefunden
-    ("Hecht", "Ganzjährig", "01.01. - 30.04."),
-    ("Karpfen", "Sommer,Herbst", "16.05. - 30.06."),
-    ("Zander", "Ganzjährig", "01.01. - 31.05."),
-    ("Wels", "Sommer", "15.05. - 15.07."),
-    ("Flussbarsch", "Ganzjährig", None),  # Keine spezifische Schonzeit gefunden
-    ("Schleie", "Frühling,Sommer", "01.06. - 30.06."),
-    ("Reinanke", "Sommer", "01.11. - 28.02."),
-    ("Seeforelle", "Herbst", "01.10. - 28.02.")
+    ("Rotauge", True, None, None),  # Keine spezifische Schonzeit
+    ("Brachse", True, None, None),  # Keine spezifische Schonzeit
+    ("Hecht", True, "01.01.", "30.04."),
+    ("Karpfen", True, "16.05.", "30.06."),
+    ("Zander", True, "01.01.", "31.05."),
+    ("Wels", True, "15.05.", "15.07."),
+    ("Flussbarsch", True, None, None),  # Keine spezifische Schonzeit
+    ("Schleie", True, "01.06.", "30.06."),
+    ("Huchen", False, None, None),
+    ("Reinanke", True, "01.11.", "28.02."),
+    ("Seeforelle", True, "01.10.", "28.02.")
 ]
 
 # Daten nur einfügen, wenn die Tabelle leer ist
