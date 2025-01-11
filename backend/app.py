@@ -24,3 +24,7 @@ if __name__ == '__main__':
     # Flask-App im Debug-Modus starten
     # Debug-Modus ermöglicht das automatische Neustarten des Servers bei Codeänderungen
     app.run(debug=True)
+
+print("Registered Routes:")
+for rule in app.url_map.iter_rules():
+    print(rule)
