@@ -36,7 +36,7 @@ def get_history():
         print(f"Database error: {e}")
         return jsonify({"error": "Database error", "details": str(e)}), 500
 
- # Endpunkt: Gruppierte Fänge basierend auf Zeiträumen
+ # Endpunkt: Gruppierte Fänge basierend auf Filter anzeingen (nach Fischart oder Datum)
 @history_blueprint.route('/history/filter', methods=['GET'])
 def filter_history():
     # Zeitraum aus Query-Parametern abrufen (z. B. "1day", "1week")
@@ -44,10 +44,7 @@ def filter_history():
 
     try:
         conn = get_db_connection()
-        query = """
-            SELECT fish_name, COUNT(*) AS count
-            FROM catches
-        """
+        filter_clause = "" # Filter für den Zeitraum
         params = []
 
         # Zeitraum-Filter hinzufügen
@@ -64,16 +61,41 @@ def filter_history():
             query += " WHERE date >= ?"
             params.append((datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d'))
 
-        # Gruppierung und Sortierung hinzufügen
-        query += " GROUP BY fish_name ORDER BY count DESC"
+        # Gruppierung nach Fischart
+        query_by_fish = f"""
+            SELECT fish_name, COUNT(*) AS count
+            FROM catches
+            {filter_clause}
+            GROUP BY fish_name
+            ORDER BY count DESC
+        """
+        grouped_by_fish = conn.execute(query_by_fish, params).fetchall()
 
-        # Query ausführen
-        result = conn.execute(query, params).fetchall()
+        # Gruppierung nach Datum
+        query_by_date = f"""
+            SELECT date, fish_name, weight
+            FROM catches
+            {filter_clause}
+            ORDER BY date ASC
+        """
+        grouped_by_date = conn.execute(query_by_date, params).fetchall()
+
         conn.close()
 
-        # Ergebnisse als Liste von Dictionaries zurückgeben
-        grouped_data = [dict(row) for row in result]
-        return jsonify(grouped_data), 200
+        # Ergebnisse formatieren
+        result = {
+            "by_fish": [dict(row) for row in grouped_by_fish],
+            "by_date": {}
+        }
+
+        # Gruppieren nach Datum
+        for row in grouped_by_date:
+            date = row["date"]
+            if date not in result["by_date"]:
+                result["by_date"][date] = []
+            result["by_date"][date].append({"fish_name": row["fish_name"], "weight": row["weight"]})
+
+        return jsonify(result), 200
 
     except sqlite3.Error as e:
         return jsonify({"error": "Database error", "details": str(e)}), 500
