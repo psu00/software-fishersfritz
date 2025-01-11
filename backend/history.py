@@ -35,30 +35,31 @@ def get_history():
     except sqlite3.Error as e:
         print(f"Database error: {e}")
         return jsonify({"error": "Database error", "details": str(e)}), 500
+           
 
  # Endpunkt: Gruppierte Fänge basierend auf Filter anzeingen (nach Fischart oder Datum)
 @history_blueprint.route('/history/filter', methods=['GET'])
 def filter_history():
     # Zeitraum aus Query-Parametern abrufen (z. B. "1day", "1week")
-    filter_period = request.args.get('period', 'total')  # Default: "total"
+    filter_period = request.args.get('period', 'total')  # Standard: "total"
 
     try:
         conn = get_db_connection()
-        filter_clause = "" # Filter für den Zeitraum
+        filter_clause = ""  # Filter für den Zeitraum
         params = []
 
         # Zeitraum-Filter hinzufügen
         if filter_period == '1day':
-            query += " WHERE date >= ?"
+            filter_clause = "WHERE date >= ?"
             params.append((datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d'))
         elif filter_period == '1week':
-            query += " WHERE date >= ?"
+            filter_clause = "WHERE date >= ?"
             params.append((datetime.now() - timedelta(weeks=1)).strftime('%Y-%m-%d'))
         elif filter_period == '1month':
-            query += " WHERE date >= ?"
+            filter_clause = "WHERE date >= ?"
             params.append((datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d'))
         elif filter_period == '1year':
-            query += " WHERE date >= ?"
+            filter_clause = "WHERE date >= ?"
             params.append((datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d'))
 
         # Gruppierung nach Fischart

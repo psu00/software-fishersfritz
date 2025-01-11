@@ -34,6 +34,7 @@ def add_catch():
     try:
         conn = get_db_connection() # Verbindung zur Datenbank herstellen
 
+
     # SQL-Query zur Überprüfung, ob die Fischart in der Datenbank vorhanden ist
         fish = conn.execute(
             'SELECT * FROM fish WHERE name = ?',
@@ -49,6 +50,13 @@ def add_catch():
         if not fish['is_allowed']:
             print(f"Validation failed: Fish '{fish_name}' is not allowed to be caught.")
             return jsonify({"error": f"Fish '{fish_name}' is not allowed to be caught."}), 400
+        
+        # Validierung: Überprüfung des Datumsformats
+        try:
+            # Versuche, das Datum zu parsen
+            catch_date = datetime.strptime(date, "%Y-%m-%d").date()
+        except ValueError:
+            return jsonify({"error": f"Invalid date format: '{date}'. Expected format: YYYY-MM-DD"}), 400
         
         # Schonzeit-Validierung
         closed_season_start = fish['closed_season_start']
@@ -74,7 +82,11 @@ def add_catch():
                 if season_start <= catch_date <= season_end:
                     print(f"Validation failed: Catch date '{date}' is within the closed season for fish '{fish_name}'.")
                     return jsonify({"error": f"Fish '{fish_name}' cannot be caught during its closed season ({season_start} to {season_end})."}), 400 
-
+            if not closed_season_start or not closed_season_end:
+                # Keine Schonzeit definiert, daher ist der Fang erlaubt
+                season_start = None
+                season_end = None
+       
         # Validierung: Überprüfung, ob das Gewicht eine positive Zahl ist
         if float(weight) <= 0:
             return jsonify({"error": "Validation failed: Weight must be a positive number"}), 400  
