@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -25,7 +26,6 @@
         </a>
       </div>
     </nav>
-
     <div class="row">
       <!-- Fischfang Button -->
       <div id="fish-catch">
@@ -36,8 +36,6 @@
         </button>
       </div>
     </div>
-
-
     <!-- Offcanvas für Fischfang -->
     <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasFishCatch"
       aria-labelledby="offcanvasFishCatchLabel" style="height: 80%;">
@@ -57,7 +55,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Gewässer/Standort</label>
+            <label class="form-label">Standort/Gewässer</label>
             <div class="input-group">
               <input type="text" class="form-control" id="locationname" placeholder="Längen- und Breitengrad">
               <input type="text" class="form-control" id="location" hidden />
@@ -79,10 +77,6 @@
               <label for="weight" class="form-label">Gewicht (kg)</label>
               <input type="text" class="form-control" id="weight" placeholder="(kg)">
             </div>
-            <div class="col-md-6 mb-3">
-              <label for="length" class="form-label">Länge (cm)</label>
-              <input type="text" class="form-control" id="length" placeholder="Länge">
-            </div>
           </div>
           <button type="submit" class="btn btn-primary" onclick="saveCatch()">Speichern</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="offcanvas"
@@ -90,33 +84,24 @@
         </form>
       </div>
     </div>
-
-
-
     <!-- Abschnitt 2: Fische zusammenfassen -->
-
     <div class="row profile-container">
       <h2>History</h2></a>
       <div class="history">
         <div class="btn-group" role="group">
-          <input type="radio" class="btn-check" name="btnradio" id="btnradiod" autocomplete="off"
-            onclick="renderProfileHistoryFiltered($('#fishHistory').first(),'d')">
+          <input type="radio" class="btn-check" name="btnradio" id="btnradiod" autocomplete="off">
           <label class="btn btn-secondary" for="btnradiod">1 day</label>
 
-          <input type="radio" class="btn-check" name="btnradio" id="btnradiow" autocomplete="off"
-            onclick="renderProfileHistoryFiltered($('#fishHistory').first(),'w')">
+          <input type="radio" class="btn-check" name="btnradio" id="btnradiow" autocomplete="off">
           <label class="btn btn-secondary" for="btnradiow">1 week</label>
 
-          <input type="radio" class="btn-check" name="btnradio" id="btnradiom" autocomplete="off"
-            onclick="renderProfileHistoryFiltered($('#fishHistory').first(),'m')">
+          <input type="radio" class="btn-check" name="btnradio" id="btnradiom" autocomplete="off">
           <label class="btn btn-secondary" for="btnradiom">1 month</label>
 
-          <input type="radio" class="btn-check" name="btnradio" id="btnradioy" autocomplete="off"
-            onclick="renderProfileHistoryFiltered($('#fishHistory').first(),'y')">
+          <input type="radio" class="btn-check" name="btnradio" id="btnradioy" autocomplete="off">
           <label class="btn btn-secondary" for="btnradioy">1 year</label>
 
-          <input type="radio" class="btn-check" name="btnradio" id="btnradiot" autocomplete="off"
-            onclick="renderProfileHistory($('#fishHistory').first())" checked>
+          <input type="radio" class="btn-check" name="btnradio" id="btnradiot" autocomplete="off" checked>
           <label class="btn btn-secondary" for="btnradiot">Total</label>
         </div>
 
@@ -146,9 +131,21 @@
         <h2>Fang-Listenansicht</h2>
         <div id="entry-list"></div>
       </div>
+      <div class="row">
+        <h3>Gefangene Fische nach Art</h3>
+        <div id="group-by-fish" class="d-flex flex-wrap">
+          <!-- Dynamisch generierter Inhalt für Fische nach Art -->
+        </div>
+      </div>
+      
+      <div class="row mt-4">
+        <h3>Gefangene Fische nach Datum</h3>
+        <div id="group-by-date">
+          <!-- Dynamisch generierter Inhalt für Fische nach Zeit -->
+        </div>
+      </div>
     </div>
   </div>
-
 
   <!-- JavaScript -->
   <script src="app.js"></script>
