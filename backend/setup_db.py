@@ -31,21 +31,22 @@ CREATE TABLE IF NOT EXISTS fish (
 fish_list = [
     ("Rotauge", True, None, None),  # Keine spezifische Schonzeit
     ("Brachse", True, None, None),  # Keine spezifische Schonzeit
-    ("Hecht", True, "01.01.", "30.04."),
-    ("Karpfen", True, "16.05.", "30.06."),
-    ("Zander", True, "01.01.", "31.05."),
-    ("Wels", True, "15.05.", "15.07."),
+    ("Hecht", True, "01-01", "04-30"),
+    ("Karpfen", True, "05-16", "06-30"),
+    ("Zander", True, "01-01", "05-31"),
+    ("Wels", True, "05-15", "07-15"),
     ("Flussbarsch", True, None, None),  # Keine spezifische Schonzeit
-    ("Schleie", True, "01.06.", "30.06."),
+    ("Schleie", True, "06-01", "06-30"),
     ("Huchen", False, None, None),
-    ("Reinanke", True, "01.11.", "28.02."),
-    ("Seeforelle", True, "01.10.", "28.02.")
+    ("Reinanke", True, "11-01", "02-28"),
+    ("Seeforelle", True, "10-01", "02-28")
 ]
+
 
 # Daten nur einfügen, wenn die Tabelle leer ist
 cursor.execute('SELECT COUNT(*) FROM fish')
 if cursor.fetchone()[0] == 0:
-    cursor.executemany('INSERT INTO fish (name, allowed_seasons, closed_season) VALUES (?, ?, ?)', fish_list)
+    cursor.executemany('INSERT INTO fish (name, is_allowed, closed_season_start, closed_season_end) VALUES (?, ?, ?, ?)', fish_list)
     print("Fischarten mit Schonzeiten wurden in die Datenbank eingefügt.")
 
 # Änderungen speichern und Verbindung schließen
