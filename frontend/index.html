@@ -48,12 +48,11 @@
         <form id="fishCatchForm">
           <div class="mb-3">
             <label for="fishName" class="form-label">Fischname</label>
-            <div class="input-group">
-              <input type="text" class="form-control" id="fish" placeholder="Fischname">
-              <input type="text" id="fishid" hidden>
-            </div>
+              <select class="form-control" id="fish">
+                <option value="" disabled selected>Wähle den gefangenen Fisch</option>
+                <input type="text" id="fishid" hidden>
+              </select>
           </div>
-
           <div class="mb-3">
             <label class="form-label">Standort/Gewässer</label>
             <div class="input-group">
@@ -76,6 +75,10 @@
             <div class="col-md-6 mb-3">
               <label for="weight" class="form-label">Gewicht (kg)</label>
               <input type="text" class="form-control" id="weight" placeholder="(kg)">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="length" class="form-label">Länge (cm)</label>
+              <input type="text" class="form-control" id="length" placeholder="(cm)">
             </div>
           </div>
           <button type="submit" class="btn btn-primary" onclick="saveCatch()">Speichern</button>
