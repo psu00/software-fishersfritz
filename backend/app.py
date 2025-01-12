@@ -9,6 +9,8 @@ app = Flask(__name__)
 
 # CORS aktivieren, um Anfragen von anderen Domains (Cross-Origin) zu ermöglichen
 CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5501"}})
+
 
 # Blueprint registrieren, um Routen und Logik aus der "catch","history"-Komponente modular hinzuzufügen
 app.register_blueprint(catch_blueprint)

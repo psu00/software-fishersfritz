@@ -74,7 +74,7 @@ def filter_history():
 
         # Gruppierung nach Datum
         query_by_date = f"""
-            SELECT date, fish_name, weight
+            SELECT date, id, fish_name, weight
             FROM catches
             {filter_clause}
             ORDER BY date ASC
@@ -94,7 +94,7 @@ def filter_history():
             date = row["date"]
             if date not in result["by_date"]:
                 result["by_date"][date] = []
-            result["by_date"][date].append({"fish_name": row["fish_name"], "weight": row["weight"]})
+            result["by_date"][date].append({"catch_id":row["id"],"fish_name": row["fish_name"], "weight": row["weight"]})
 
         return jsonify(result), 200
 
@@ -102,9 +102,9 @@ def filter_history():
         return jsonify({"error": "Database error", "details": str(e)}), 500
 
  # Endpunkt: Eintrag löschen
-@history_blueprint.route('/history/<int:catch_id>', methods=['DELETE'])
+@history_blueprint.route('/history/<int:catch_id>', methods=['DELETE', 'OPTIONS'])
 def delete_history(catch_id):
-    try:
+    try:    
         conn = get_db_connection()
         if conn is None:
             return jsonify({"error": "Database connection failed"}), 500

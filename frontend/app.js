@@ -56,9 +56,10 @@ async function renderGroupedByDate(period) {
         const fishItems = data.by_date[date]
           .map(
             (fish) =>
-              `<div class="fish-entry">
+              `<div class="fish-entry" data-catch-id="${fish.catch_id}">
                  <span>${fish.fish_name}</span>
                  <span>Gewicht: ${fish.weight} kg</span>
+                 <button class="btn btn-danger btn-sm" onclick="deleteCatch(${fish.catch_id})">Löschen</button>
                </div>`
           )
           .join("");
@@ -142,6 +143,42 @@ async function saveCatch(event) {
   }
 }
 
+async function deleteCatch(catchId) {
+  if (!catchId) {
+    console.error("Die Catch-ID ist undefined.");
+    alert("Fehler: Catch-ID fehlt.");
+    return;
+  }
+  const confirmation = confirm("Möchtest du diesen Fang wirklich löschen?");
+  if (!confirmation) return;
+
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/history/${catchId}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      alert("Fang wurde erfolgreich gelöscht!");
+      // Entferne den Eintrag aus der Ansicht
+      const entry = document.querySelector(`[data-catch-id="${catchId}"]`);
+      if (entry) entry.remove();
+
+      // Entferne die Gruppe, wenn keine Einträge mehr vorhanden sind
+      const dateGroup = entry.closest(".date-group");
+      if (dateGroup && dateGroup.querySelectorAll(".fish-entry").length === 0) {
+        dateGroup.remove();
+      }
+    } else {
+      const errorData = await response.json();
+      alert(`Fehler: ${errorData.error}`);
+    }
+  } catch (error) {
+    console.error("Fehler beim Löschen des Fangs:", error);
+    alert("Ein Fehler ist aufgetreten. Bitte versuche es später erneut.");
+  }
+}
+
+
 // Funktion: Fischnamen vom Backend aus der Tabelle Fish laden und im Formular anzeigen
 async function loadFishNames() {
   const dropdown = document.getElementById("fish");
@@ -169,8 +206,7 @@ async function loadFishNames() {
   }
 }
 
-// Event-Listener: Fische laden, wenn die Seite geladen wird
-document.addEventListener("DOMContentLoaded", loadFishNames);
+
 
 // Funktion, um die Uhrzeit ins Formular zu setzen
 function setCurrentTime() {
@@ -235,3 +271,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("fishCatchForm");
   form.addEventListener("submit", saveCatch);
 });
+
+// Event-Listener: Fische laden, wenn die Seite geladen wird
+document.addEventListener("DOMContentLoaded", loadFishNames);
