@@ -59,6 +59,7 @@ async function renderGroupedByDate(period) {
               `<div class="fish-entry" data-catch-id="${fish.catch_id}">
                  <span>${fish.fish_name}</span>
                  <span>Gewicht: ${fish.weight} kg</span>
+                 <button class="btn btn-warning btn-sm" onclick="editCatch(${fish.catch_id})">Bearbeiten</button>
                  <button class="btn btn-danger btn-sm" onclick="deleteCatch(${fish.catch_id})">Löschen</button>
                </div>`
           )
@@ -205,6 +206,86 @@ async function loadFishNames() {
     dropdown.innerHTML = '<option value="" disabled>Fischnamen konnten nicht geladen werden</option>';
   }
 }
+
+async function editCatch(catchId) {
+  try {
+    // Daten für die spezifische ID abrufen
+    const response = await fetch(`http://127.0.0.1:5000/history/${catchId}`);
+    if (!response.ok) {
+      throw new Error(`Fehler beim Abrufen der Daten: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // Canvas öffnen und die Formularfelder mit den abgerufenen Daten füllen
+    const offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasFishCatch"));
+    offcanvas.show();
+
+    document.getElementById("fish").value = data.fish_name;
+    document.getElementById("locationname").value = `${data.latitude}, ${data.longitude}`;
+    document.getElementById("date").value = data.date;
+    document.getElementById("weight").value = data.weight;
+    document.getElementById("length").value = data.length || ""; // Falls Länge nicht verfügbar, leer lassen
+
+    // Speichern-Button aktualisieren
+    const saveButton = document.querySelector("#fishCatchForm button[type='submit']");
+    saveButton.setAttribute("onclick", `saveEdit(${catchId})`);
+  } catch (error) {
+    console.error("Fehler beim Laden der Daten:", error);
+    alert("Ein Fehler ist aufgetreten. Bitte versuche es später erneut.");
+  }
+}
+
+async function saveEdit(catchId) {
+  const fishName = document.getElementById("fish").value;
+  const latitude = document.getElementById("locationname").value.split(",")[0].trim();
+  const longitude = document.getElementById("locationname").value.split(",")[1]?.trim();
+  const weight = document.getElementById("weight").value;
+  const date = document.getElementById("date").value;
+  const length = document.getElementById("length").value;
+
+  // Überprüfen, ob alle Felder ausgefüllt sind
+  if (!fishName || !latitude || !longitude || !weight || !date) {
+    alert("Bitte alle erforderlichen Felder ausfüllen.");
+    return;
+  }
+
+  // JSON-Payload für den PUT-Request
+  const payload = {
+    fish_name: fishName,
+    latitude: parseFloat(latitude),
+    longitude: parseFloat(longitude),
+    weight: parseFloat(weight),
+    date: date,
+    length: length ? parseFloat(length) : null, // Optionales Feld
+  };
+
+  try {
+    // Sende die aktualisierten Daten an das Backend
+    const response = await fetch(`http://127.0.0.1:5000/history/${catchId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      alert("Fang erfolgreich aktualisiert!");
+      document.getElementById("fishCatchForm").reset(); // Formular zurücksetzen
+      const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById("offcanvasFishCatch"));
+      offcanvas.hide(); // Canvas schließen
+      updateView("total"); // Ansicht aktualisieren
+    } else {
+      const errorData = await response.json();
+      alert(`Fehler: ${errorData.error}`);
+    }
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren des Fangs:", error);
+    alert("Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.");
+  }
+}
+
 
 
 
