@@ -142,6 +142,36 @@ async function saveCatch(event) {
   }
 }
 
+// Funktion: Fischnamen vom Backend aus der Tabelle Fish laden und im Formular anzeigen
+async function loadFishNames() {
+  const dropdown = document.getElementById("fish");
+
+  try {
+    // Abrufen der Fischnamen vom Backend
+    const response = await fetch("http://127.0.0.1:5000/fish");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const fishNames = await response.json();
+
+    // Dropdown-Menü leeren und mit Optionen füllen
+    dropdown.innerHTML = '<option value="" disabled selected>Wähle einen Fisch</option>';
+    fishNames.forEach((fishName) => {
+      const option = document.createElement("option");
+      option.value = fishName; // Der Wert der Option
+      option.textContent = fishName; // Der angezeigte Text
+      dropdown.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Fehler beim Laden der Fischnamen:", error);
+    dropdown.innerHTML = '<option value="" disabled>Fischnamen konnten nicht geladen werden</option>';
+  }
+}
+
+// Event-Listener: Fische laden, wenn die Seite geladen wird
+document.addEventListener("DOMContentLoaded", loadFishNames);
+
 // Funktion, um die Uhrzeit ins Formular zu setzen
 function setCurrentTime() {
     const timeInput = document.getElementById("time");
