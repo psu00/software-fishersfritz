@@ -48,10 +48,10 @@ source .venv/bin/activate  # Linux/Mac
 4. **Run backend services**:
    Each of the following Python scripts must be executed:
    ```bash
-   python3 app.py  # Main backend application
    python3 catch.py  # Handles catch operations
    python3 fish.py  # Manages fish data
    python3 history.py  # Retrieves historical data
+   python3 app.py  # Main backend application
    ```
 
 5. **Run the frontend**:
@@ -79,4 +79,4 @@ To add new fish catches via the app:
 ## Credits
 This project is part of the Agile Software Engineering course and was built collaboratively to demonstrate key concepts of web app development.
 
-Lukas Fassl, Usame Firat, Daniel Gunkel, Phillip Sucic
+*Lukas Fassl, Usame Firat, Daniel Gunkel, Phillip Sucic*
