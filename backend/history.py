@@ -74,7 +74,7 @@ def filter_history():
 
         # Gruppierung nach Datum
         query_by_date = f"""
-            SELECT date, fish_name, weight
+            SELECT date, id, fish_name, weight
             FROM catches
             {filter_clause}
             ORDER BY date ASC
@@ -94,7 +94,7 @@ def filter_history():
             date = row["date"]
             if date not in result["by_date"]:
                 result["by_date"][date] = []
-            result["by_date"][date].append({"fish_name": row["fish_name"], "weight": row["weight"]})
+            result["by_date"][date].append({"catch_id":row["id"],"fish_name": row["fish_name"], "weight": row["weight"]})
 
         return jsonify(result), 200
 
@@ -102,9 +102,9 @@ def filter_history():
         return jsonify({"error": "Database error", "details": str(e)}), 500
 
  # Endpunkt: Eintrag löschen
-@history_blueprint.route('/history/<int:catch_id>', methods=['DELETE'])
+@history_blueprint.route('/history/<int:catch_id>', methods=['DELETE', 'OPTIONS'])
 def delete_history(catch_id):
-    try:
+    try:    
         conn = get_db_connection()
         if conn is None:
             return jsonify({"error": "Database connection failed"}), 500
@@ -115,6 +115,84 @@ def delete_history(catch_id):
         conn.close()
 
         return jsonify({"message": "Catch deleted successfully"}), 200
+
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+        return jsonify({"error": "Database error", "details": str(e)}), 500
+    
+# Endpunkt: Eintrag bearbeiten ---------------------------------------------------------------------------------------#
+# Endpunkt: Eintrag bearbeiten
+@history_blueprint.route('/history/<int:catch_id>', methods=['PUT'])
+def update_history(catch_id):
+    try:
+        conn = get_db_connection()
+        if conn is None:
+            return jsonify({"error": "Database connection failed"}), 500
+
+        # JSON-Daten aus der Anfrage abrufen
+        data = request.get_json()
+
+        # Erforderliche Felder überprüfen
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+
+        # Werte aus der Anfrage extrahieren
+        fish_name = data.get("fish_name")
+        latitude = data.get("latitude")
+        longitude = data.get("longitude")
+        weight = data.get("weight")
+        date = data.get("date")
+
+        # Überprüfen, ob die Felder vorhanden und gültig sind
+        if not all([fish_name, latitude, longitude, weight, date]):
+            return jsonify({"error": "Missing required fields"}), 400
+
+        try:
+            weight = float(weight)
+            latitude = float(latitude)
+            longitude = float(longitude)
+            datetime.strptime(date, '%Y-%m-%d')  # Datum validieren
+        except ValueError:
+            return jsonify({"error": "Invalid field values"}), 400
+
+        # SQL-Abfrage für die Aktualisierung
+        conn.execute("""
+            UPDATE catches
+            SET fish_name = ?, latitude = ?, longitude = ?, weight = ?, date = ?
+            WHERE id = ?
+        """, (fish_name, latitude, longitude, weight, date, catch_id))
+        conn.commit()
+        conn.close()
+
+        return jsonify({"message": "Catch updated successfully"}), 200
+
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+        return jsonify({"error": "Database error", "details": str(e)}), 500
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return jsonify({"error": "Unexpected error", "details": str(e)}), 500
+
+# Endpunkt: Daten eines spezifischen Eintrags abrufen ----------------------------------------------------------------#
+@history_blueprint.route('/history/<int:catch_id>', methods=['GET'])
+def get_catch_by_id(catch_id):
+    try:
+        conn = get_db_connection()
+        if conn is None:
+            return jsonify({"error": "Database connection failed"}), 500
+
+        # Abfrage für die spezifische ID
+        query = "SELECT * FROM catches WHERE id = ?"
+        entry = conn.execute(query, (catch_id,)).fetchone()
+        conn.close()
+
+        # Prüfen, ob der Eintrag existiert
+        if entry is None:
+            return jsonify({"error": "Catch not found"}), 404
+
+        # Ergebnis als Dictionary zurückgeben
+        result = dict(entry)
+        return jsonify(result), 200
 
     except sqlite3.Error as e:
         print(f"Database error: {e}")
