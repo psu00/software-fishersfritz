@@ -50,6 +50,22 @@ async function renderGroupedByDate(period) {
     // Container leeren
     container.innerHTML = "";
 
+    // Fisch Bilder
+    const fishImages = {
+      "Rotauge": "images/Rotauge.jpg",
+      "Brachse": "images/Brachse.jpeg",
+      "Hecht": "images/Hecht.jpg",
+      "Karpfen": "images/Karpfen.jpg",
+      "Zander": "images/Zander.jpg",
+      "Wels": "images/Wels.jpg",
+      "Flussbarsch": "images/Flussbarsch.jpg",
+      "Schleie": "images/Schleie.jpg",
+      "Huchen": "images/Huchen.png",
+      "Reinanke": "images/Reinanke.jpg",
+      "Seeforelle": "images/Seeforelle.jpg"
+    };
+    
+
     // Rendern der Fische (nach Datum)
     if (data.by_date) {
       for (const date in data.by_date) {
@@ -57,6 +73,7 @@ async function renderGroupedByDate(period) {
           .map(
             (fish) =>
               `<div class="fish-entry" data-catch-id="${fish.catch_id}">
+                <img src="${fishImages[fish.fish_name]}" width="75" height="50">  
                  <span>${fish.fish_name}</span>
                  <span>Gewicht: ${fish.weight} kg</span>
                  <button class="btn btn-warning btn-sm" onclick="editCatch(${fish.catch_id})">Bearbeiten</button>
