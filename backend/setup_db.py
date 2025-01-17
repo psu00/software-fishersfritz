@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS catches (
     latitude REAL,
     longitude REAL,
     weight REAL NOT NULL,
-    date TEXT NOT NULL
+    date TEXT NOT NULL, 
+    length REAL NOT NULL
 )
 ''')
 
@@ -58,7 +59,7 @@ fish_list = [
 # Daten nur einfügen, wenn die Tabelle leer ist
 cursor.execute('SELECT COUNT(*) FROM catches')
 if cursor.fetchone()[0] == 0:
-    cursor.executemany('INSERT INTO catches (fish_name, latitude, longitude, weight, date) VALUES (?, ?, ?, ?, ?)', catch_list)
+    cursor.executemany('INSERT INTO catches (fish_name, latitude, longitude, weight, date, length) VALUES (?, ?, ?, ?, ?, ?)', catch_list)
     print("Die Fänge wurden in die Datenbank eingefügt.")
 
 # Daten nur einfügen, wenn die Tabelle leer ist
