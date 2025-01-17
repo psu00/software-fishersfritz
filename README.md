@@ -15,7 +15,7 @@ The app also validates whether a specific fish can be caught during the selected
 - **Delete recorded catches:** Remove specific catch entries from the list.
 
 ### Integrated background operations
-- **Season validation:** Validate whether the selected fish type can be caught at the chosen time (based on data from the database).
+- **Season & length validation:** Validate whether the selected fish type can be caught at the chosen time (based on data from the database) or the minimum length.
 - **Predefined fish types:** Retrieve and pre-fill the fish selection dropdown with options from the database.
 - **Location autofill:** Automatically fill in the current location using GPS.
 
@@ -46,12 +46,9 @@ source .venv/bin/activate  # Linux/Mac
    ```
 
 4. **Run backend services**:
-   Each of the following Python scripts must be executed:
+   The following Python script must be executed:
    ```bash
-   python3 catch.py  # Handles catch operations
-   python3 fish.py  # Manages fish data
-   python3 history.py  # Retrieves historical data
-   python3 app.py  # Main backend application
+   python3 app.py  # Main application
    ```
 
 5. **Run the frontend**:
