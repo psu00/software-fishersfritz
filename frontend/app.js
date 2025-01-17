@@ -22,7 +22,7 @@ async function renderGroupedByFish(period) {
         const fishDiv = `
           <div class="fish-card">
             <h5>${fish.fish_name}</h5>
-            <p>Anzahl: ${fish.count}</p>
+            <p>x ${fish.count}</p>
           </div>`;
         container.innerHTML += fishDiv;
       });
@@ -50,6 +50,22 @@ async function renderGroupedByDate(period) {
     // Container leeren
     container.innerHTML = "";
 
+    // Fisch Bilder
+    const fishImages = {
+      "Rotauge": "images/Rotauge.png",
+      "Brachse": "images/Brachse.png",
+      "Hecht": "images/Hecht.png",
+      "Karpfen": "images/Karpfen.png",
+      "Zander": "images/Zander.png",
+      "Wels": "images/Wels.png",
+      "Flussbarsch": "images/Flussbarsch.png",
+      "Schleie": "images/Schleie.png",
+      "Huchen": "images/Huchen.png",
+      "Reinanke": "images/Reinanke.png",
+      "Seeforelle": "images/Seeforelle.png"
+    };
+    
+
     // Rendern der Fische (nach Datum)
     if (data.by_date) {
       for (const date in data.by_date) {
@@ -57,6 +73,7 @@ async function renderGroupedByDate(period) {
           .map(
             (fish) =>
               `<div class="fish-entry" data-catch-id="${fish.catch_id}">
+                <img src="${fishImages[fish.fish_name]}" width="75" height="50">  
                  <span>${fish.fish_name}</span>
                  <span>Gewicht: ${fish.weight} kg</span>
                  <button class="btn btn-warning btn-sm" onclick="editCatch(${fish.catch_id})">Bearbeiten</button>

@@ -4,3 +4,4 @@
 
 flask==3.0.3       # for backend
 requests==2.32.3   # for frontend/python_cli
+flask-cors==5.0.0  # for flask
