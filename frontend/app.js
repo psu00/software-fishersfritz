@@ -22,7 +22,7 @@ async function renderGroupedByFish(period) {
         const fishDiv = `
           <div class="fish-card">
             <h5>${fish.fish_name}</h5>
-            <p>Anzahl: ${fish.count}</p>
+            <p>x ${fish.count}</p>
           </div>`;
         container.innerHTML += fishDiv;
       });
@@ -52,17 +52,17 @@ async function renderGroupedByDate(period) {
 
     // Fisch Bilder
     const fishImages = {
-      "Rotauge": "images/Rotauge.jpg",
-      "Brachse": "images/Brachse.jpeg",
-      "Hecht": "images/Hecht.jpg",
-      "Karpfen": "images/Karpfen.jpg",
-      "Zander": "images/Zander.jpg",
-      "Wels": "images/Wels.jpg",
-      "Flussbarsch": "images/Flussbarsch.jpg",
-      "Schleie": "images/Schleie.jpg",
+      "Rotauge": "images/Rotauge.png",
+      "Brachse": "images/Brachse.png",
+      "Hecht": "images/Hecht.png",
+      "Karpfen": "images/Karpfen.png",
+      "Zander": "images/Zander.png",
+      "Wels": "images/Wels.png",
+      "Flussbarsch": "images/Flussbarsch.png",
+      "Schleie": "images/Schleie.png",
       "Huchen": "images/Huchen.png",
-      "Reinanke": "images/Reinanke.jpg",
-      "Seeforelle": "images/Seeforelle.jpg"
+      "Reinanke": "images/Reinanke.png",
+      "Seeforelle": "images/Seeforelle.png"
     };
     
 
