@@ -1,0 +1,305 @@
+openapi: 3.0.0
+info:
+  title: Fischer Fritz API
+  description: API zur Verwaltung von Daten über Fischarten im Fischer Fritz Projekt.
+  version: "1.0.0"
+servers:
+  - url: 'https://api.deinprojekt.de/v1'
+paths:
+  /fish:
+    get:
+      summary: Ruft eine Liste von Fischnamen ab
+      operationId: getFishNames
+      responses:
+        '200':
+          description: Liste der Fischnamen erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: Name einer Fischart
+        '500':
+          description: Interner Datenbankfehler
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: string
+  /catch:
+    post:
+      summary: Fügt einen neuen Fang hinzu
+      operationId: addCatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fish_name
+                - latitude
+                - longitude
+                - weight
+                - date
+              properties:
+                fish_name:
+                  type: string
+                  description: Name der Fischart
+                latitude:
+                  type: number
+                  format: double
+                  description: Geografische Breite des Fangorts
+                longitude:
+                  type: number
+                  format: double
+                  description: Geografische Länge des Fangorts
+                weight:
+                  type: number
+                  format: double
+                  description: Gewicht des Fisches in Kilogramm
+                date:
+                  type: string
+                  format: date
+                  description: Datum des Fangs im Format YYYY-MM-DD
+      responses:
+        '201':
+          description: Fang erfolgreich hinzugefügt
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Catch added successfully
+        '400':
+          description: Fehlende oder ungültige Daten
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Datenbankfehler
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: string
+
+  /history:
+    get:
+      summary: Ruft alle Einträge der Fanghistorie ab
+      operationId: getHistory
+      responses:
+        '200':
+          description: Liste der Fanghistorie erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '500':
+          description: Datenbankfehler
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: string
+
+  /history/filter:
+    get:
+      summary: Zeigt gefilterte Fänge basierend auf dem Zeitraum oder Fischart an
+      operationId: filterHistory
+      parameters:
+        - in: query
+          name: period
+          schema:
+            type: string
+          description: Filterperiode ('1day', '1week', '1month', '1year', 'total')
+      responses:
+        '200':
+          description: Gefilterte Daten erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  by_fish:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        fish_name:
+                          type: string
+                        count:
+                          type: integer
+                  by_date:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          catch_id:
+                            type: integer
+                          fish_name:
+                            type: string
+                          weight:
+                            type: number
+        '500':
+          description: Datenbankfehler
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: string
+
+  /history/{catch_id}:
+    get:
+      summary: Ruft Daten eines spezifischen Fangs ab
+      operationId: getCatchById
+      parameters:
+        - in: path
+          name: catch_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Details des Fangs erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '404':
+          description: Fang nicht gefunden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Datenbankfehler
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: string
+    delete:
+      summary: Löscht einen spezifischen Fang
+      operationId: deleteHistory
+      parameters:
+        - in: path
+          name: catch_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Fang erfolgreich gelöscht
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Datenbankfehler
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: string
+    put:
+      summary: Aktualisiert Daten eines spezifischen Fangs
+      operationId: updateHistory
+      parameters:
+        - in: path
+          name: catch_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fish_name:
+                  type: string
+                latitude:
+                  type: number
+                longitude:
+                  type: number
+                weight:
+                  type: number
+                date:
+                  type: string
+                  format: date
+      responses:
+        '200':
+          description: Fang erfolgreich aktualisiert
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Fehlende oder ungültige Daten
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Datenbankfehler
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: string
+
