@@ -31,14 +31,14 @@ CREATE TABLE IF NOT EXISTS fish (
 
 catch_list = [
     # Perschling, Angelgebiet
-    ("Rotauge", 48.2700, 15.8000, 0.8, "2024-11-11"),  
-    ("Karpfen", 48.2700, 15.8000, 3.8, "2024-11-11"),
+    ("Rotauge", 48.2700, 15.8000, 0.8, "2024-11-11", 17),  
+    ("Karpfen", 48.2700, 15.8000, 3.8, "2024-11-11", 39),
     # Krems, Angelgebiet
-    ("Wels", 48.4100, 15.6000, 5.0, "2024-12-12"),
+    ("Wels", 48.4100, 15.6000, 5.0, "2024-12-12", 73.8),
     # Tulln, Angelgebiet
-    ("Zander", 48.3300, 16.0700, 4.2, "2024-12-30"),  
+    ("Zander", 48.3300, 16.0700, 4.2, "2024-12-30", 64.9),  
     # Krems, Angelgebiet
-    ("Hecht", 48.4100, 15.6000, 2.5, "2025-01-12") 
+    ("Hecht", 48.4100, 15.6000, 2.5, "2025-01-12", 60.4) 
 ]
 
 # Beispiel-Daten für die Fischarten hinzufügen
