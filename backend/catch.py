@@ -14,6 +14,7 @@ def get_db_connection():
         return conn  # Gibt die Datenbankverbindung zurück
     except sqlite3.Error as e:
         print(f"SQLite Fehler: {e}")
+        
         return jsonify({"error": "Database error", "details": str(e)}), 500
 
 # Route: Fang hinzufügen
@@ -27,8 +28,13 @@ def add_catch():
     longitude = new_catch.get('longitude')
     weight = new_catch.get('weight')
     date = new_catch.get('date')
+    length = new_catch.get('length')
+
+    print(f"SQL: INSERT INTO catches (fish_name, longitude, latitude, weight, date, length)")
+    print(f"Values: {fish_name}, {longitude}, {latitude}, {weight}, {date}, {length}")
+
     # Validierung: Überprüfung, ob alle erforderlichen Felder vorhanden sind
-    if not (fish_name and longitude and latitude and weight and date):
+    if not (fish_name and longitude and latitude and weight and date and length):
         return jsonify({"error": "Missing required fields"}), 400  # Fehlermeldung mit HTTP-Statuscode 400 (Bad Request)
     
     try:
@@ -50,6 +56,12 @@ def add_catch():
         if not fish['is_allowed']:
             print(f"Validation failed: Fish '{fish_name}' is not allowed to be caught.")
             return jsonify({"error": f"Fish '{fish_name}' is not allowed to be caught."}), 400
+        
+        # **Brittelmaß-Validierung**
+        brittelmaß = fish['minimum_size_cm']
+        if brittelmaß and float(length) < brittelmaß:
+            print(f"Validation failed: Fish '{fish_name}' is smaller than the required minimum size ({brittelmaß} cm).")
+            return jsonify({"error": f"Fish '{fish_name}' is smaller than the required minimum size ({brittelmaß} cm)."}), 400
         
         # Validierung: Überprüfung des Datumsformats
         try:
@@ -94,8 +106,8 @@ def add_catch():
 
         # SQL-Query zur Einfügung eines neuen Eintrags in die Tabelle "catches"
         conn.execute(
-            'INSERT INTO catches (fish_name, longitude, latitude, weight, date) VALUES (?, ?, ?, ?, ?)',
-            (fish_name, longitude, latitude, weight, date)
+            'INSERT INTO catches (fish_name, longitude, latitude, weight, date) VALUES (?, ?, ?, ?, ?, ?)',
+            (fish_name, longitude, latitude, weight, date, length)
         )
         conn.commit()  # Änderungen speichern
         conn.close()  # Datenbankverbindung schließen
