@@ -142,10 +142,11 @@ def update_history(catch_id):
         longitude = data.get("longitude")
         weight = data.get("weight")
         date = data.get("date")
+        length = data.get("length")
 
         # Überprüfen, ob die Felder vorhanden und gültig sind
-        if not all([fish_name, latitude, longitude, weight, date]):
-            return jsonify({"error": "Missing required fields"}), 400
+        #if not all([fish_name, latitude, longitude, weight, date, time, length]):
+           # return jsonify({"error": "Missing required fields"}), 400
 
         try:
             weight = float(weight)
@@ -158,9 +159,9 @@ def update_history(catch_id):
         # SQL-Abfrage für die Aktualisierung
         conn.execute("""
             UPDATE catches
-            SET fish_name = ?, latitude = ?, longitude = ?, weight = ?, date = ?
+            SET fish_name = ?, latitude = ?, longitude = ?, weight = ?, date = ?, length = ?
             WHERE id = ?
-        """, (fish_name, latitude, longitude, weight, date, catch_id))
+        """, (fish_name, latitude, longitude, weight, date, catch_id, length))
         conn.commit()
         conn.close()
 
