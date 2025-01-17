@@ -120,9 +120,10 @@ async function saveCatch(event) {
   const longitude = document.getElementById("locationname").value.split(",")[1]?.trim();
   const weight = document.getElementById("weight").value;
   const date = document.getElementById("date").value;
+  const length = document.getElementById("length").value;
 
   // Überprüfe, ob alle erforderlichen Felder ausgefüllt sind
-  if (!fishName || !latitude || !longitude || !weight || !date) {
+  if (!fishName || !latitude || !longitude || !weight || !date || !length) {
     alert("Bitte alle erforderlichen Felder ausfüllen.");
     return;
   }
@@ -134,6 +135,7 @@ async function saveCatch(event) {
     longitude: parseFloat(longitude),
     weight: parseFloat(weight),
     date: date,
+    length: parseFloat(length),
   };
 
   try {
@@ -262,7 +264,7 @@ async function saveEdit(catchId) {
   const length = document.getElementById("length").value;
 
   // Überprüfen, ob alle Felder ausgefüllt sind
-  if (!fishName || !latitude || !longitude || !weight || !date) {
+  if (!fishName || !latitude || !longitude || !weight || !date || !length) {
     alert("Bitte alle erforderlichen Felder ausfüllen.");
     return;
   }
@@ -274,7 +276,7 @@ async function saveEdit(catchId) {
     longitude: parseFloat(longitude),
     weight: parseFloat(weight),
     date: date,
-    length: length ? parseFloat(length) : null, // Optionales Feld
+    length: length, // Optionales Feld
   };
 
   try {

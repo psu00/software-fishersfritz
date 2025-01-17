@@ -60,14 +60,12 @@ fish_list = [
 cursor.execute('SELECT COUNT(*) FROM catches')
 if cursor.fetchone()[0] == 0:
     cursor.executemany('INSERT INTO catches (fish_name, latitude, longitude, weight, date, length) VALUES (?, ?, ?, ?, ?, ?)', catch_list)
-    print("Die Fänge wurden in die Datenbank eingefügt.")
 
 # Daten nur einfügen, wenn die Tabelle leer ist
 cursor.execute('SELECT COUNT(*) FROM fish')
 if cursor.fetchone()[0] == 0:
     cursor.executemany('INSERT INTO fish (name, is_allowed, closed_season_start, closed_season_end, minimum_size_cm) VALUES (?, ?, ?, ?, ?)', fish_list)
-    print("Fischarten mit Schonzeiten und Mindestmaß wurden in die Datenbank eingefügt.")
-
+    
 # Änderungen speichern und Verbindung schließen
 conn.commit()
 conn.close()

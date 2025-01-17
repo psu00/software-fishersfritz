@@ -106,7 +106,7 @@ def add_catch():
 
         # SQL-Query zur Einfügung eines neuen Eintrags in die Tabelle "catches"
         conn.execute(
-            'INSERT INTO catches (fish_name, longitude, latitude, weight, date) VALUES (?, ?, ?, ?, ?, ?)',
+            'INSERT INTO catches (fish_name, longitude, latitude, weight, date, length) VALUES (?, ?, ?, ?, ?, ?)',
             (fish_name, longitude, latitude, weight, date, length)
         )
         conn.commit()  # Änderungen speichern
