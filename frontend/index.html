@@ -26,13 +26,11 @@
         </a>
       </div>
     </nav>
-    <div class="row">
+    <div class="neuer-fish-button">
       <!-- Fischfang Button -->
       <div id="fish-catch">
-        <button class="fish-catch-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFishCatch"
-          aria-controls="offcanvasFishCatch">
-          <img src="assets/img/catch.png" alt="Fischfang">
-          <span>Fischfang</span>
+        <button class="btn btn-primary p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFishCatch" aria-controls="offcanvasFishCatch">
+          Neuer Fischfang
         </button>
       </div>
     </div>
@@ -89,60 +87,36 @@
     </div>
     <!-- Abschnitt 2: Fische zusammenfassen -->
     <div class="row profile-container">
-      <h2>History</h2></a>
+      <h2 class="display-5" >History</h2></a>
       <div class="history">
         <div class="btn-group" role="group">
+
+
           <input type="radio" class="btn-check" name="btnradio" id="btnradiod" autocomplete="off">
-          <label class="btn btn-secondary" for="btnradiod">1 day</label>
+          <label class="btn btn-outline-primary" for="btnradiod">1 day</label>
 
           <input type="radio" class="btn-check" name="btnradio" id="btnradiow" autocomplete="off">
-          <label class="btn btn-secondary" for="btnradiow">1 week</label>
+          <label class="btn btn-outline-primary" for="btnradiow">1 week</label>
 
           <input type="radio" class="btn-check" name="btnradio" id="btnradiom" autocomplete="off">
-          <label class="btn btn-secondary" for="btnradiom">1 month</label>
+          <label class="btn btn-outline-primary" for="btnradiom">1 month</label>
 
           <input type="radio" class="btn-check" name="btnradio" id="btnradioy" autocomplete="off">
-          <label class="btn btn-secondary" for="btnradioy">1 year</label>
+          <label class="btn btn-outline-primary" for="btnradioy">1 year</label>
 
           <input type="radio" class="btn-check" name="btnradio" id="btnradiot" autocomplete="off" checked>
-          <label class="btn btn-secondary" for="btnradiot">Total</label>
+          <label class="btn btn-outline-primary" for="btnradiot">Total</label>
         </div>
-
-        <!-- Fish Container -->
-        <div class="content">
-          <div class="list-group" id="fishHistory">
-            <!--Platz für dynamischen Content -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Abschnitt 3: Listenansicht -->
 
       <div class="row">
-        <div class="history">
-          <!-- Fish Container -->
-          <div class="content-history">
-            <div class="list-group" id="fishHistory">
-
-            </div>
-            <!-- Dynamically generated content will appear here -->
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>Fang-Listenansicht</h2>
-        <div id="entry-list"></div>
-      </div>
-      <div class="row">
-        <h3>Gefangene Fische nach Art</h3>
+        <h3 class="display-6">Gefangene Fische nach Art</h3>
         <div id="group-by-fish" class="d-flex flex-wrap">
           <!-- Dynamisch generierter Inhalt für Fische nach Art -->
         </div>
       </div>
       
       <div class="row mt-4">
-        <h3>Gefangene Fische nach Datum</h3>
+        <h3 class="display-6">Gefangene Fische nach Datum</h3>
         <div id="group-by-date">
           <!-- Dynamisch generierter Inhalt für Fische nach Zeit -->
         </div>
