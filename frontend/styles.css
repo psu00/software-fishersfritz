@@ -1,0 +1,334 @@
+.svg-inline--fa {
+    
+    width: 24px;  /* Breite */
+    height: 24px; /* Höhe */
+  }
+  
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.container-fluid{
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.container{
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+    
+}
+.profile-container {
+    background-color: #F2F2F2;
+    border-bottom: 1px solid #D9D9D9;
+    box-shadow: 0px 2px 5px rgba(165, 43, 43, 0.1); /* Optional: Schatten für visuelle Trennung */ 
+}
+
+h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.5rem;
+    margin: 0;
+    padding: 15px;
+}
+
+
+/*-------------------History------------------------*/
+.history {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.fish-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.fish-card-link {
+    text-decoration: none; /* Unterstrich entfernen */
+    color: inherit; /* Textfarbe beibehalten */
+    display: inline-block; /* Block-Level-Link für die gesamte Karte */
+}
+.fish-card {
+    border: 1px solid #ddd; /* Rahmen für die Karte */
+    border-radius: 8px; /* Abgerundete Ecken */
+    padding: 20px; /* Innenabstand */
+    text-align: center; /* Zentrierter Inhalt */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Schatten für moderne Optik */
+    transition: transform 0.2s, box-shadow 0.2s; /* Animation bei Hover */
+    margin: 5px;
+ }
+
+.fish-card:hover {
+    transform: scale(1.02); /* Vergrößerung bei Hover */
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Stärkerer Schatten bei Hover */
+}
+
+.history-container .fish-row {
+    margin: 0 auto; /* Zentriert den Inhalt */
+    max-width: 1200px; /* Optional: maximale Breite für den Inhalt */
+}
+
+.content {
+    min-height: 10px;
+    background-color: white; /* Weißer Hintergrund */
+    width: 100%; /* Volle Breite */
+    /*padding: 20px; /* Innenabstand */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Schatten für visuelle Trennung */
+}
+/*--------------------Profile-Profile--------------------------*/
+
+
+/*
+Button Gruppe
+*/
+.btn-group {
+    display: flex; /* Flexbox aktivieren */
+    justify-content: center; /* Inhalte horizontal zentrieren */
+    margin: 0 auto; /* Sicherstellen, dass die Gruppe im Container zentriert bleibt */
+    padding: 0px 50px 15px 50px; /* Optional: Innenabstand für die Gruppe */
+    
+}
+
+/*----------------History------------------*/
+.content-history {
+    min-height: 300px;
+    background-color: white; /* Weißer Hintergrund */
+    width: 100%; /* Volle Breite */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Schatten für visuelle Trennung */
+}
+.date-group {
+    /*margin-bottom: 20px;*/
+    padding-top: 5px;
+    background-color: #f9f9f9;
+   /* border: 1px solid #ddd;*/
+    border-radius: 20px;
+    padding-left: 10px;
+
+}
+
+.date-group h4 {
+    margin: 5px;
+    color: #333;
+    font-size: 18px;
+}
+
+.fish-list {
+    list-style: none;
+}
+
+.fish-list .history-item {
+    border-bottom: 1px solid rgb(176, 176, 176);
+    text-decoration: none; /* Unterstrich entfernen */
+    color: inherit; /* Textfarbe beibehalten */
+}
+
+.fish-image {
+    width: 150px;
+    height: 150px;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Stil für den Text und die Uhrzeit */
+.fish-details {
+    display: flex; /* Flexbox-Layout */
+    align-items: center; /* Vertikale Ausrichtung */
+    gap: 10px; /* Abstand zwischen Bild und Text */
+}
+
+/*------------History Details Akkoredon-----------------*/
+
+.accordion-button {
+    text-align: left;
+}
+.accordion-body ul {
+    margin-top: 1rem;
+    padding-left: 20px;
+}
+
+#fish-catch{
+    width:100%;
+}
+#fish-catch a{
+    text-align: center;
+    width:300px;
+    height:300px;
+    display:block;
+    margin: auto;
+    background-color: #efefef;
+    border-radius: 50%;
+}
+#fish-catch a img{
+    width:100%;
+}
+
+
+.catch-form-box{
+    border:1px solid black;
+}
+.location-search{
+    color:black;
+}
+.catch-header{
+    min-height: 60px;
+    margin-top:5px;
+    border-bottom: 1px solid black;
+}
+    .catch-header .icon{
+        width:40px;
+        height:40px;
+        margin-right:10px;
+    }
+    .catch-header a{
+        color:black;
+    }
+    .catch-header #fish-label{
+        flex:1 1 auto;
+        font-size:20px;
+        line-height: 36px;
+    }
+
+#toggle{
+    font-size:24px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    width:80px;
+    margin:auto;
+}
+    #toggle svg{
+        margin:0;
+        padding:0;
+    }
+
+
+
+/*-------------------------Fischfang/Index-------------------*/
+#fish-catch {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px 20px 0px 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+.fish-catch-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    object-fit: cover; /* Bild proportional skalieren */
+    justify-content: center;
+    width: 300px; /* Breite des Buttons */
+    height: 300px; /* Höhe des Buttons */
+    border-radius: 50%; /* Macht den Button rund */
+    background-color: #8cc3ff3b; /* Blaue Hintergrundfarbe */
+    color: white; /* Textfarbe */
+    font-size: 14px; /* Schriftgröße für den Text */
+    text-align: center;
+    border: none; /* Entfernt den Rahmen */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optionaler Schatten */
+    cursor: pointer; /* Zeigt den Mauszeiger als Hand an */
+}
+
+.fish-catch-btn img {
+    width: 200px; /* Breite des Bildes */
+    height: 200px; /* Automatische Höhe basierend auf dem Seitenverhältnis */
+    margin-bottom: 8px; /* Abstand zwischen Bild und Text */
+    border-radius: 50%; /* Optional: rundes Bild */
+}
+
+.fish-catch-btn span {
+    color: rgb(0, 0, 0); /* Textfarbe */
+    font-size: 30px; /* Textgröße */
+    font-weight: bold; /* Fettschrift für den Text */
+}
+.modal-backdrop {
+    z-index: 1040 !important;
+ }
+ .modal {
+    z-index: 1050 !important;
+}
+
+/* desktop screen */
+@media screen and (min-width: 1280px){
+    .catch-form-box{
+        width:700px;
+    }
+}
+
+/*Media Query Verusch*/
+@media (max-width: 390px) {
+    /* Navbar verkleinern */
+    .navbar {
+        font-size: 0.9rem; /* Kleinere Schriftgröße */
+        padding: 10px; /* Weniger Innenabstand */
+    }
+
+    /* Button-Gruppe verkleinern */
+    .btn-group .btn {
+        font-size: 0.8rem; /* Kleinere Schrift */
+        padding: 5px 10px; /* Weniger Abstand */
+    }
+
+    /* Fischkarten verkleinern */
+    .fish-card {
+        width: 50px; /* Kleinere Kartenbreite */
+        padding: 10px; /* Weniger Innenabstand */
+    }
+
+    .fish-card img {
+        max-width: 20px; /* Kleinere Bilder */
+        height: auto;
+        margin-bottom: 5px;
+    }
+
+        /* Fisch-Container (Row) */
+        .fish-row {
+            display: flex; /* Flexbox aktivieren */
+            flex-wrap: nowrap; /* Zeilenumbruch verhindern */
+            justify-content: flex-start; /* Elemente linksbündig anzeigen */
+            overflow-x: auto; /* Horizontal scrollen erlauben, falls nicht genug Platz */
+            gap: 10px; /* Abstand zwischen den Fischen */
+        }
+    
+        /* Fischkarten (Items) */
+        .fish-card {
+            flex: 0 0 auto; /* Feste Breite, keine Skalierung */
+            width: 80px; /* Feste Breite für die Fischkarten */
+            padding: 5px; /* Weniger Innenabstand */
+            text-align: center; /* Inhalt zentrieren */
+        }
+    
+        .fish-card img {
+            max-width: 60px; /* Kleinere Bilder */
+            height: auto;
+            margin-bottom: 5px;
+        }
+    
+        /* Button-Gruppe */
+        .btn-group {
+            display: flex;
+            justify-content: center; /* Buttons zentrieren */
+            margin-bottom: 10px; /* Abstand nach unten */
+        }
+    
+        .btn-group .btn {
+            font-size: 0.8rem; /* Kleinere Schrift */
+            padding: 5px 8px; /* Weniger Abstand */
+        }
+    
+}
+
+.fish-entry{
+    margin-bottom: 15px; /* Abstand nach unten */
+    margin-top: -15px;
+    margin-left: -15px;
+    padding: 1rem;
+}
+
+
+.neuer-fish-button{
+    margin-bottom: 10px;
+    margin-top: -10px;
+}

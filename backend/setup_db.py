@@ -4,36 +4,68 @@ import sqlite3
 conn = sqlite3.connect('fischerfritz.db')
 cursor = conn.cursor()
 
+# Tabelle für dokumentierte Fänge erstellen
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS catches (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fish_name TEXT NOT NULL,
+    latitude REAL,
+    longitude REAL,
+    weight REAL NOT NULL,
+    date TEXT NOT NULL, 
+    length REAL NOT NULL
+)
+''')
+
 # Tabelle für Fischarten mit erlaubten Jahreszeiten und Schonzeiten erstellen
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS fish (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    allowed_seasons TEXT NOT NULL,
-    closed_season TEXT
+    name TEXT NOT NULL UNIQUE,
+    is_allowed BOOLEAN NOT NULL,
+    closed_season_start TEXT,
+    closed_season_end TEXT, 
+    minimum_size_cm INTEGER
 )
 ''')
 
+catch_list = [
+    # Perschling, Angelgebiet
+    ("Rotauge", 48.2700, 15.8000, 0.8, "2024-11-11", 17),  
+    ("Karpfen", 48.2700, 15.8000, 3.8, "2024-11-11", 39),
+    # Krems, Angelgebiet
+    ("Wels", 48.4100, 15.6000, 5.0, "2024-12-12", 73.8),
+    # Tulln, Angelgebiet
+    ("Zander", 48.3300, 16.0700, 4.2, "2024-12-30", 64.9),  
+    # Krems, Angelgebiet
+    ("Hecht", 48.4100, 15.6000, 2.5, "2025-01-12", 60.4) 
+]
+
 # Beispiel-Daten für die Fischarten hinzufügen
 fish_list = [
-    ("Rotauge", "Frühling,Sommer", None),  # Keine spezifische Schonzeit gefunden
-    ("Brachse", "Frühling,Sommer,Herbst", None),  # Keine spezifische Schonzeit gefunden
-    ("Hecht", "Ganzjährig", "01.01. - 30.04."),
-    ("Karpfen", "Sommer,Herbst", "16.05. - 30.06."),
-    ("Zander", "Ganzjährig", "01.01. - 31.05."),
-    ("Wels", "Sommer", "15.05. - 15.07."),
-    ("Flussbarsch", "Ganzjährig", None),  # Keine spezifische Schonzeit gefunden
-    ("Schleie", "Frühling,Sommer", "01.06. - 30.06."),
-    ("Reinanke", "Sommer", "01.11. - 28.02."),
-    ("Seeforelle", "Herbst", "01.10. - 28.02.")
+    ("Rotauge", True, None, None, 15),  # Keine spezifische Schonzeit
+    ("Brachse", True, None, None, 30),  # Keine spezifische Schonzeit
+    ("Hecht", True, "01-01", "04-30", 55),
+    ("Karpfen", True, "05-16", "06-30", 35),
+    ("Zander", True, "01-01", "05-31", 50),
+    ("Wels", True, "05-15", "07-15", 70),
+    ("Flussbarsch", True, None, None, 20),  # Keine spezifische Schonzeit
+    ("Schleie", True, "06-01", "06-30", 25),
+    ("Huchen", False, None, None, 35),
+    ("Reinanke", True, "11-01", "02-28", 35),
+    ("Seeforelle", True, "10-01", "02-28", 60)
 ]
+
+# Daten nur einfügen, wenn die Tabelle leer ist
+cursor.execute('SELECT COUNT(*) FROM catches')
+if cursor.fetchone()[0] == 0:
+    cursor.executemany('INSERT INTO catches (fish_name, latitude, longitude, weight, date, length) VALUES (?, ?, ?, ?, ?, ?)', catch_list)
 
 # Daten nur einfügen, wenn die Tabelle leer ist
 cursor.execute('SELECT COUNT(*) FROM fish')
 if cursor.fetchone()[0] == 0:
-    cursor.executemany('INSERT INTO fish (name, allowed_seasons, closed_season) VALUES (?, ?, ?)', fish_list)
-    print("Fischarten mit Schonzeiten wurden in die Datenbank eingefügt.")
-
+    cursor.executemany('INSERT INTO fish (name, is_allowed, closed_season_start, closed_season_end, minimum_size_cm) VALUES (?, ?, ?, ?, ?)', fish_list)
+    
 # Änderungen speichern und Verbindung schließen
 conn.commit()
 conn.close()

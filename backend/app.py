@@ -1,13 +1,34 @@
-from catch import catch_data
-from history import save_history
-from setup_db import setup_database
+from flask import Flask  # Flask-Framework importieren, um die Webanwendung zu erstellen
+from flask_cors import CORS  # CORS (Cross-Origin Resource Sharing) importieren, um externe Anfragen zuzulassen
+from catch import catch_blueprint  # Blueprint "catch" importieren, um modularen Code zu verwenden
+from history import history_blueprint  # Blueprint "history" importieren, um modularen Code zu verwenden
+from fish import fish_blueprint  # Blueprint "fish" importieren, um modularen Code zu verwenden
 
-def main():
-    print(setup_database())
-    data = catch_data()
-    print(data)
-    print(save_history(data))
+# Erstelle eine Flask-App-Instanz
+app = Flask(__name__)
 
-if __name__ == "__main__":
-    main()
+# CORS aktivieren, um Anfragen von anderen Domains (Cross-Origin) zu ermöglichen
+CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5501"}})
 
+
+# Blueprint registrieren, um Routen und Logik aus der "catch","history"-Komponente modular hinzuzufügen
+app.register_blueprint(catch_blueprint)
+app.register_blueprint(history_blueprint)
+app.register_blueprint(fish_blueprint)
+
+# Route für die Startseite definieren
+@app.route('/')
+def home():
+    # Rückgabe einer Willkommensnachricht als Antwort auf Anfragen an "/"
+    return "Welcome to FisherFritz API!"
+
+# Hauptfunktion, um den Flask-Server zu starten
+if __name__ == '__main__':
+    # Flask-App im Debug-Modus starten
+    # Debug-Modus ermöglicht das automatische Neustarten des Servers bei Codeänderungen
+    app.run(debug=True)
+
+print("Registered Routes:")
+for rule in app.url_map.iter_rules():
+    print(rule)
