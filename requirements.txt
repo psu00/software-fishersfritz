@@ -1,0 +1,6 @@
+# Python package requirements for backend and frontend applications
+# Activate your virtual environment with: source .venv/bin/activate
+# and then install these requirements with: pip install -r requirements.txt
+
+flask==3.0.3       # for backend
+requests==2.32.3   # for frontend/python_cli
